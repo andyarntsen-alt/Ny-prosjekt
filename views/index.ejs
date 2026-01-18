@@ -1,0 +1,104 @@
+<%- include('partials/layout-start') %>
+
+<div class="scroll-indicator" id="scroll-indicator" aria-hidden="true">
+  <div class="scroll-indicator-track">
+    <div class="scroll-indicator-progress"></div>
+  </div>
+  <div class="scroll-indicator-thumb"></div>
+  <div class="scroll-indicator-dots"></div>
+</div>
+
+<% const heroSecondaryHref = content.hero.secondaryCta.href === '#collections' ? '#specs' : content.hero.secondaryCta.href; %>
+<section class="hero" data-scroll-section>
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<%= content.hero.image %>">
+    <source src="/video/watermark_removed_790b1440-8129-4e2f-9103-9d14c3f46ead.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content reveal" data-animate>
+    <div class="hero-eyebrow"><%= content.hero.eyebrow %></div>
+    <h1 class="hero-title"><%= content.hero.title %></h1>
+    <p class="hero-description"><%= content.hero.description %></p>
+    <div class="hero-meta">
+      <% (content.hero.meta || []).forEach((item) => { %>
+        <span><%= item %></span>
+      <% }) %>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href="<%= content.hero.primaryCta.href %>"><%= content.hero.primaryCta.label %></a>
+      <a class="btn outline" href="<%= heroSecondaryHref %>"><%= content.hero.secondaryCta.label %></a>
+    </div>
+  </div>
+</section>
+
+<section class="section specs-section" id="specs" data-scroll-section>
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow"><%= content.home.specs.eyebrow %></div>
+    <h2 class="section-title"><%= content.home.specs.title %></h2>
+    <p class="section-subtitle"><%= content.home.specs.subtitle %></p>
+  </div>
+  <div class="spec-grid" data-animate>
+    <% content.home.specs.items.forEach((item) => { %>
+      <div class="spec-card reveal<%= item.detail ? ' has-detail' : '' %>" data-spec-card <%= item.detail ? 'role="button" tabindex="0" aria-pressed="false"' : '' %>>
+        <div class="spec-value"><%= item.value %></div>
+        <div class="spec-label"><%= item.label %></div>
+        <% if (item.detail) { %>
+          <div class="spec-detail"><%= item.detail %></div>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section" id="flow" data-scroll-section>
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow"><%= content.home.flow.eyebrow %></div>
+    <h2 class="section-title"><%= content.home.flow.title %></h2>
+    <p class="section-subtitle"><%= content.home.flow.subtitle %></p>
+  </div>
+  <div class="timeline" data-animate>
+    <% content.timeline.forEach((step, index) => { %>
+      <div class="timeline-step reveal<%= step.detail ? ' has-detail' : '' %>" data-timeline-step <%= step.detail ? 'role="button" tabindex="0" aria-expanded="false"' : '' %>>
+        <div class="timeline-index"><%= String(index + 1).padStart(2, '0') %></div>
+        <div>
+          <h3><%= step.title %></h3>
+          <p class="timeline-description"><%= step.description %></p>
+          <% if (step.detail) { %>
+            <div class="timeline-detail"><%= step.detail %></div>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section" id="benefits" data-scroll-section>
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow"><%= content.home.benefits.eyebrow %></div>
+    <h2 class="section-title"><%= content.home.benefits.title %></h2>
+    <p class="section-subtitle"><%= content.home.benefits.subtitle %></p>
+  </div>
+  <div class="feature-grid" data-animate>
+    <% content.benefits.forEach((benefit) => { %>
+      <div class="feature-card reveal">
+        <h3><%= benefit.title %></h3>
+        <p><%= benefit.description %></p>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section cta-section" data-scroll-section>
+  <div class="cta-band" data-animate>
+    <div class="cta-content reveal">
+      <div class="section-eyebrow"><%= content.home.cta.eyebrow %></div>
+      <h2 class="section-title"><%= content.home.cta.title %></h2>
+      <p class="section-subtitle"><%= content.home.cta.subtitle %></p>
+    </div>
+    <div class="cta-actions reveal">
+      <a class="btn" href="<%= content.home.cta.primaryCta.href %>"><%= content.home.cta.primaryCta.label %></a>
+      <a class="btn outline" href="<%= content.home.cta.secondaryCta.href %>"><%= content.home.cta.secondaryCta.label %></a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

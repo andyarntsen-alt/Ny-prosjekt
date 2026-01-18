@@ -1,0 +1,52 @@
+<%- include('../partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="product-actions" style="justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+      <div class="section-eyebrow">Administrasjon</div>
+      <h1 class="section-title" style="margin: 0;">Produkter</h1>
+    </div>
+    <div class="admin-action-group">
+      <button class="btn ghost" type="submit" form="reorder-form">Lagre rekkef&oslash;lge</button>
+      <a class="btn" href="/admin/products/new">Nytt produkt</a>
+    </div>
+  </div>
+
+  <p class="muted" style="margin-bottom: 24px;">Dra produktene for &aring; endre rekkef&oslash;lgen de vises i listene.</p>
+
+  <form id="reorder-form" method="post" action="/admin/products/reorder" data-reorder-form>
+    <input type="hidden" name="order" value="" data-reorder-input>
+  </form>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Flytt</th>
+        <th>Navn</th>
+        <th>Pris</th>
+        <th>Tilbud</th>
+        <th>Handlinger</th>
+      </tr>
+    </thead>
+    <tbody data-reorder-list>
+      <% products.forEach((product) => { %>
+        <tr data-reorder-row data-product-id="<%= product.id %>">
+          <td class="drag-cell">
+            <button class="drag-handle" type="button" data-reorder-handle draggable="true" aria-label="Dra for &aring; endre rekkef&oslash;lge">::</button>
+          </td>
+          <td><%= product.name %></td>
+          <td><%= formatMoney(product.price_cents) %></td>
+          <td><%= product.is_featured ? 'Ja' : 'Nei' %></td>
+          <td>
+            <a class="btn ghost small" href="/admin/products/<%= product.id %>/edit">Rediger</a>
+            <form method="post" action="/admin/products/<%= product.id %>/delete" style="display: inline;">
+              <button class="btn ghost small" type="submit">Slett</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+
+<%- include('../partials/layout-end') %>

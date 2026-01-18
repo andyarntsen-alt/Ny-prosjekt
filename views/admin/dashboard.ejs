@@ -1,0 +1,31 @@
+<%- include('../partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header" style="text-align: center; margin-bottom: 64px;">
+    <div class="section-eyebrow">Administrasjon</div>
+    <h1 class="section-title">Kontrollsenter</h1>
+  </div>
+  
+  <div class="feature-grid" style="margin-bottom: 48px;">
+    <div class="feature-card" style="background: var(--surface); border: 1px solid var(--border);">
+      <div class="section-eyebrow" style="margin-bottom: 12px;">Produkter</div>
+      <h2 style="font-family: var(--font-display); font-size: 48px; font-weight: 600;"><%= stats.productCount %></h2>
+    </div>
+    <div class="feature-card" style="background: var(--surface); border: 1px solid var(--border);">
+      <div class="section-eyebrow" style="margin-bottom: 12px;">Ordre</div>
+      <h2 style="font-family: var(--font-display); font-size: 48px; font-weight: 600;"><%= stats.orderCount %></h2>
+    </div>
+    <div class="feature-card" style="background: var(--surface); border: 1px solid var(--border);">
+      <div class="section-eyebrow" style="margin-bottom: 12px;">Omsetning</div>
+      <h2 style="font-family: var(--font-display); font-size: 48px; font-weight: 600;"><%= formatMoney(stats.revenue) %></h2>
+    </div>
+  </div>
+  
+  <div class="product-actions" style="justify-content: center;">
+    <a class="btn" href="/admin/products">Administrer produkter</a>
+    <a class="btn outline" href="/admin/orders">Se ordre</a>
+    <a class="btn ghost" href="/admin/content">Rediger innhold</a>
+  </div>
+</section>
+
+<%- include('../partials/layout-end') %>

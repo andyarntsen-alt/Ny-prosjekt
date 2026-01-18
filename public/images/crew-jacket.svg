@@ -1,0 +1,13 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f141b"/>
+      <stop offset="1" stop-color="#0a0f17"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <rect x="220" y="140" width="360" height="340" rx="28" stroke="#23d4ff" stroke-width="2"/>
+  <path d="M260 220 L360 160 L440 160 L540 220" stroke="#f5313f" stroke-width="3" fill="none"/>
+  <text x="400" y="320" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="44" fill="#f4f7fb">CREW JACKET</text>
+  <text x="400" y="370" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="18" fill="#a0acbc">FALCON HEAVY EDITION</text>
+</svg>

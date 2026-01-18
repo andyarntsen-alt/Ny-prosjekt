@@ -1,0 +1,668 @@
+<%- include('../partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px; max-width: 1100px; margin: 0 auto;">
+  <div class="section-header" style="text-align: center; margin-bottom: 48px;">
+    <div class="section-eyebrow">Administrasjon</div>
+    <h1 class="section-title">Rediger innhold</h1>
+    <p class="section-subtitle">Oppdater tekster og bilder som vises p&aring; butikken.</p>
+  </div>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="notice" style="margin-bottom: 24px;"><%= error %></div>
+  <% } %>
+
+  <% if (saved) { %>
+    <div class="notice" style="margin-bottom: 24px;">Innhold er lagret.</div>
+  <% } %>
+
+  <% const heroMetaItems = (content.hero.meta && content.hero.meta.length) ? content.hero.meta : ['']; %>
+  <% const timelineItems = (content.timeline && content.timeline.length) ? content.timeline : [{ title: '', description: '', detail: '' }]; %>
+  <% const benefitItems = (content.benefits && content.benefits.length) ? content.benefits : [{ title: '', description: '' }]; %>
+  <% const specItems = (content.home && content.home.specs && content.home.specs.items && content.home.specs.items.length) ? content.home.specs.items : [{ value: '', label: '', detail: '' }]; %>
+  <% const collectionItems = (content.collections && content.collections.length) ? content.collections : [{ title: '', subtitle: '', handle: '', pitch: '', lead: '' }]; %>
+
+  <form class="form-grid" method="post" action="/admin/content" enctype="multipart/form-data">
+    <div class="admin-block">
+      <div class="admin-block-title">Merkevare</div>
+      <div class="form-grid">
+        <div>
+          <label for="brand">Merkenavn</label>
+          <input type="text" id="brand" name="brand" value="<%= content.brand %>">
+        </div>
+        <div>
+          <label for="tagline">Tagline</label>
+          <textarea id="tagline" name="tagline"><%= content.tagline %></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Hero</div>
+      <div class="form-grid">
+        <div>
+          <label for="hero_eyebrow">Overlinje</label>
+          <input type="text" id="hero_eyebrow" name="hero_eyebrow" value="<%= content.hero.eyebrow %>">
+        </div>
+        <div>
+          <label for="hero_title">Tittel</label>
+          <input type="text" id="hero_title" name="hero_title" value="<%= content.hero.title %>">
+        </div>
+        <div>
+          <label for="hero_description">Beskrivelse</label>
+          <textarea id="hero_description" name="hero_description"><%= content.hero.description %></textarea>
+        </div>
+      </div>
+
+      <div class="repeat-columns">
+        <div>
+          <label for="hero_primary_label">Prim&aelig;r knappetekst</label>
+          <input type="text" id="hero_primary_label" name="hero_primary_label" value="<%= content.hero.primaryCta.label %>">
+        </div>
+        <div>
+          <label for="hero_primary_href">Prim&aelig;r lenke</label>
+          <input type="text" id="hero_primary_href" name="hero_primary_href" value="<%= content.hero.primaryCta.href %>">
+        </div>
+        <div>
+          <label for="hero_secondary_label">Sekund&aelig;r knappetekst</label>
+          <input type="text" id="hero_secondary_label" name="hero_secondary_label" value="<%= content.hero.secondaryCta.label %>">
+        </div>
+        <div>
+          <label for="hero_secondary_href">Sekund&aelig;r lenke</label>
+          <input type="text" id="hero_secondary_href" name="hero_secondary_href" value="<%= content.hero.secondaryCta.href %>">
+        </div>
+      </div>
+
+      <div class="repeat-columns">
+        <div>
+          <label for="hero_image">Last opp hero-bilde</label>
+          <input type="file" id="hero_image" name="hero_image" accept="image/*" data-image-input data-preview-target="#hero-image-preview" style="padding: 12px;">
+        </div>
+        <div>
+          <label for="hero_image_url">Eller bilde-URL</label>
+          <input type="text" id="hero_image_url" name="hero_image_url" value="<%= content.hero.image %>">
+        </div>
+      </div>
+
+      <div>
+        <label>Forh&aring;ndsvisning</label>
+        <img id="hero-image-preview" data-image-preview src="<%= content.hero.image %>" alt="Hero-bilde" style="margin-top: 12px; max-width: 320px; border: 1px solid var(--border);">
+      </div>
+
+      <div class="repeat-group" data-repeater>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div class="admin-block-title" style="margin: 0;">Hero-detaljer</div>
+          <button class="btn ghost small" type="button" data-repeater-add data-template="hero-meta-template">Legg til linje</button>
+        </div>
+        <div class="repeat-list" data-repeater-list>
+          <% heroMetaItems.forEach((item) => { %>
+            <div class="repeat-item" data-repeater-item>
+              <input type="text" name="hero_meta[]" value="<%= item %>" placeholder="F.eks. Fri frakt over 4 490,-">
+              <div class="repeat-actions">
+                <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Forside - seksjonsoverskrifter</div>
+      <div class="form-grid">
+        <div class="repeat-columns">
+          <div>
+            <label for="home_collections_eyebrow">Oppsett overlinje</label>
+            <input type="text" id="home_collections_eyebrow" name="home_collections_eyebrow" value="<%= content.home.collections.eyebrow %>">
+          </div>
+          <div>
+            <label for="home_collections_title">Oppsett tittel</label>
+            <input type="text" id="home_collections_title" name="home_collections_title" value="<%= content.home.collections.title %>">
+          </div>
+          <div>
+            <label for="home_collections_subtitle">Oppsett undertittel</label>
+            <input type="text" id="home_collections_subtitle" name="home_collections_subtitle" value="<%= content.home.collections.subtitle %>">
+          </div>
+        </div>
+
+        <div class="repeat-columns">
+          <div>
+            <label for="home_featured_eyebrow">Utvalgte overlinje</label>
+            <input type="text" id="home_featured_eyebrow" name="home_featured_eyebrow" value="<%= content.home.featured.eyebrow %>">
+          </div>
+          <div>
+            <label for="home_featured_title">Utvalgte tittel</label>
+            <input type="text" id="home_featured_title" name="home_featured_title" value="<%= content.home.featured.title %>">
+          </div>
+          <div>
+            <label for="home_featured_subtitle">Utvalgte undertittel</label>
+            <input type="text" id="home_featured_subtitle" name="home_featured_subtitle" value="<%= content.home.featured.subtitle %>">
+          </div>
+        </div>
+
+        <div class="repeat-columns">
+          <div>
+            <label for="home_flow_eyebrow">Slik fungerer det overlinje</label>
+            <input type="text" id="home_flow_eyebrow" name="home_flow_eyebrow" value="<%= content.home.flow.eyebrow %>">
+          </div>
+          <div>
+            <label for="home_flow_title">Slik fungerer det tittel</label>
+            <input type="text" id="home_flow_title" name="home_flow_title" value="<%= content.home.flow.title %>">
+          </div>
+          <div>
+            <label for="home_flow_subtitle">Slik fungerer det undertittel</label>
+            <input type="text" id="home_flow_subtitle" name="home_flow_subtitle" value="<%= content.home.flow.subtitle %>">
+          </div>
+        </div>
+
+        <div class="repeat-columns">
+          <div>
+            <label for="home_benefits_eyebrow">Fordeler overlinje</label>
+            <input type="text" id="home_benefits_eyebrow" name="home_benefits_eyebrow" value="<%= content.home.benefits.eyebrow %>">
+          </div>
+          <div>
+            <label for="home_benefits_title">Fordeler tittel</label>
+            <input type="text" id="home_benefits_title" name="home_benefits_title" value="<%= content.home.benefits.title %>">
+          </div>
+          <div>
+            <label for="home_benefits_subtitle">Fordeler undertittel</label>
+            <input type="text" id="home_benefits_subtitle" name="home_benefits_subtitle" value="<%= content.home.benefits.subtitle %>">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Forside - spesifikasjoner</div>
+      <div class="form-grid">
+        <div>
+          <label for="home_specs_eyebrow">Overlinje</label>
+          <input type="text" id="home_specs_eyebrow" name="home_specs_eyebrow" value="<%= content.home.specs.eyebrow %>">
+        </div>
+        <div>
+          <label for="home_specs_title">Tittel</label>
+          <input type="text" id="home_specs_title" name="home_specs_title" value="<%= content.home.specs.title %>">
+        </div>
+        <div>
+          <label for="home_specs_subtitle">Undertittel</label>
+          <textarea id="home_specs_subtitle" name="home_specs_subtitle"><%= content.home.specs.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="repeat-group" data-repeater>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div class="muted">Kort om funksjon og verdi. Hold det kort og presist.</div>
+          <button class="btn ghost small" type="button" data-repeater-add data-template="specs-template">Legg til linje</button>
+        </div>
+        <div class="repeat-list" data-repeater-list>
+          <% specItems.forEach((item) => { %>
+            <div class="repeat-item" data-repeater-item>
+              <div class="repeat-columns">
+                <div>
+                  <label>Verdi</label>
+                  <input type="text" name="spec_value[]" value="<%= item.value %>">
+                </div>
+                <div>
+                  <label>Beskrivelse</label>
+                  <input type="text" name="spec_label[]" value="<%= item.label %>">
+                </div>
+              </div>
+              <div>
+                <label>Detalj (valgfritt)</label>
+                <input type="text" name="spec_detail[]" value="<%= item.detail || '' %>">
+              </div>
+              <div class="repeat-actions">
+                <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Forside - tidslinje</div>
+      <div class="repeat-group" data-repeater>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div class="muted">Legg til eller fjern steg i arbeidsflyten.</div>
+          <button class="btn ghost small" type="button" data-repeater-add data-template="timeline-template">Legg til steg</button>
+        </div>
+        <div class="repeat-list" data-repeater-list>
+          <% timelineItems.forEach((step) => { %>
+            <div class="repeat-item" data-repeater-item>
+              <div class="repeat-columns">
+                <div>
+                  <label>Tittel</label>
+                  <input type="text" name="timeline_title[]" value="<%= step.title %>">
+                </div>
+                <div>
+                  <label>Beskrivelse</label>
+                  <input type="text" name="timeline_description[]" value="<%= step.description %>">
+                </div>
+              </div>
+              <div>
+                <label>Detalj (valgfritt)</label>
+                <input type="text" name="timeline_detail[]" value="<%= step.detail || '' %>">
+              </div>
+              <div class="repeat-actions">
+                <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Forside - fordeler</div>
+      <div class="repeat-group" data-repeater>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div class="muted">Dette vises som kort p&aring; forsiden.</div>
+          <button class="btn ghost small" type="button" data-repeater-add data-template="benefits-template">Legg til fordel</button>
+        </div>
+        <div class="repeat-list" data-repeater-list>
+          <% benefitItems.forEach((benefit) => { %>
+            <div class="repeat-item" data-repeater-item>
+              <div class="repeat-columns">
+                <div>
+                  <label>Tittel</label>
+                  <input type="text" name="benefit_title[]" value="<%= benefit.title %>">
+                </div>
+                <div>
+                  <label>Beskrivelse</label>
+                  <input type="text" name="benefit_description[]" value="<%= benefit.description %>">
+                </div>
+              </div>
+              <div class="repeat-actions">
+                <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Forside - CTA</div>
+      <div class="form-grid">
+        <div>
+          <label for="home_cta_eyebrow">Overlinje</label>
+          <input type="text" id="home_cta_eyebrow" name="home_cta_eyebrow" value="<%= content.home.cta.eyebrow %>">
+        </div>
+        <div>
+          <label for="home_cta_title">Tittel</label>
+          <input type="text" id="home_cta_title" name="home_cta_title" value="<%= content.home.cta.title %>">
+        </div>
+        <div>
+          <label for="home_cta_subtitle">Undertittel</label>
+          <textarea id="home_cta_subtitle" name="home_cta_subtitle"><%= content.home.cta.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="home_cta_primary_label">Prim&aelig;r knappetekst</label>
+          <input type="text" id="home_cta_primary_label" name="home_cta_primary_label" value="<%= content.home.cta.primaryCta.label %>">
+        </div>
+        <div>
+          <label for="home_cta_primary_href">Prim&aelig;r lenke</label>
+          <input type="text" id="home_cta_primary_href" name="home_cta_primary_href" value="<%= content.home.cta.primaryCta.href %>">
+        </div>
+        <div>
+          <label for="home_cta_secondary_label">Sekund&aelig;r knappetekst</label>
+          <input type="text" id="home_cta_secondary_label" name="home_cta_secondary_label" value="<%= content.home.cta.secondaryCta.label %>">
+        </div>
+        <div>
+          <label for="home_cta_secondary_href">Sekund&aelig;r lenke</label>
+          <input type="text" id="home_cta_secondary_href" name="home_cta_secondary_href" value="<%= content.home.cta.secondaryCta.href %>">
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Kolleksjonskort</div>
+      <p class="muted">Husk at handle m&aring; matche Shopify-kolleksjonen (f.eks. dual-monitor).</p>
+      <div class="repeat-group" data-repeater>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div class="muted">Kolleksjoner vises p&aring; forsiden og i butikken.</div>
+          <button class="btn ghost small" type="button" data-repeater-add data-template="collections-template">Legg til kolleksjon</button>
+        </div>
+        <div class="repeat-list" data-repeater-list>
+          <% collectionItems.forEach((collection) => { %>
+            <div class="repeat-item" data-repeater-item>
+              <div class="repeat-columns">
+                <div>
+                  <label>Tittel</label>
+                  <input type="text" name="collection_title[]" value="<%= collection.title %>">
+                </div>
+                <div>
+                  <label>Undertittel</label>
+                  <input type="text" name="collection_subtitle[]" value="<%= collection.subtitle %>">
+                </div>
+                <div>
+                  <label>Handle</label>
+                  <input type="text" name="collection_handle[]" value="<%= collection.handle %>">
+                </div>
+              </div>
+              <div class="form-grid">
+                <div>
+                  <label>Pitch</label>
+                  <input type="text" name="collection_pitch[]" value="<%= collection.pitch %>">
+                </div>
+                <div>
+                  <label>Lead</label>
+                  <textarea name="collection_lead[]"><%= collection.lead %></textarea>
+                </div>
+              </div>
+              <div class="repeat-actions">
+                <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Tilbud-side</div>
+      <div class="form-grid">
+        <div>
+          <label for="shop_header_eyebrow">Overlinje</label>
+          <input type="text" id="shop_header_eyebrow" name="shop_header_eyebrow" value="<%= content.shop.header.eyebrow %>">
+        </div>
+        <div>
+          <label for="shop_header_title">Tittel</label>
+          <input type="text" id="shop_header_title" name="shop_header_title" value="<%= content.shop.header.title %>">
+        </div>
+        <div>
+          <label for="shop_header_subtitle">Undertittel</label>
+          <textarea id="shop_header_subtitle" name="shop_header_subtitle"><%= content.shop.header.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div>
+          <label for="shop_cta_eyebrow">CTA overlinje</label>
+          <input type="text" id="shop_cta_eyebrow" name="shop_cta_eyebrow" value="<%= content.shop.cta.eyebrow %>">
+        </div>
+        <div>
+          <label for="shop_cta_title">CTA tittel</label>
+          <input type="text" id="shop_cta_title" name="shop_cta_title" value="<%= content.shop.cta.title %>">
+        </div>
+        <div>
+          <label for="shop_cta_subtitle">CTA undertittel</label>
+          <textarea id="shop_cta_subtitle" name="shop_cta_subtitle"><%= content.shop.cta.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="shop_cta_primary_label">Prim&aelig;r knappetekst</label>
+          <input type="text" id="shop_cta_primary_label" name="shop_cta_primary_label" value="<%= content.shop.cta.primaryCta.label %>">
+        </div>
+        <div>
+          <label for="shop_cta_primary_href">Prim&aelig;r lenke</label>
+          <input type="text" id="shop_cta_primary_href" name="shop_cta_primary_href" value="<%= content.shop.cta.primaryCta.href %>">
+        </div>
+        <div>
+          <label for="shop_cta_secondary_label">Sekund&aelig;r knappetekst</label>
+          <input type="text" id="shop_cta_secondary_label" name="shop_cta_secondary_label" value="<%= content.shop.cta.secondaryCta.label %>">
+        </div>
+        <div>
+          <label for="shop_cta_secondary_href">Sekund&aelig;r lenke</label>
+          <input type="text" id="shop_cta_secondary_href" name="shop_cta_secondary_href" value="<%= content.shop.cta.secondaryCta.href %>">
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="shop_collections_eyebrow">Kolleksjoner overlinje</label>
+          <input type="text" id="shop_collections_eyebrow" name="shop_collections_eyebrow" value="<%= content.shop.collections.eyebrow %>">
+        </div>
+        <div>
+          <label for="shop_collections_title">Kolleksjoner tittel</label>
+          <input type="text" id="shop_collections_title" name="shop_collections_title" value="<%= content.shop.collections.title %>">
+        </div>
+        <div>
+          <label for="shop_collections_subtitle">Kolleksjoner undertittel</label>
+          <input type="text" id="shop_collections_subtitle" name="shop_collections_subtitle" value="<%= content.shop.collections.subtitle %>">
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="shop_featured_eyebrow">Utvalgte overlinje</label>
+          <input type="text" id="shop_featured_eyebrow" name="shop_featured_eyebrow" value="<%= content.shop.featured.eyebrow %>">
+        </div>
+        <div>
+          <label for="shop_featured_title">Utvalgte tittel</label>
+          <input type="text" id="shop_featured_title" name="shop_featured_title" value="<%= content.shop.featured.title %>">
+        </div>
+        <div>
+          <label for="shop_featured_subtitle">Utvalgte undertittel</label>
+          <input type="text" id="shop_featured_subtitle" name="shop_featured_subtitle" value="<%= content.shop.featured.subtitle %>">
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Kolleksjoner-side</div>
+      <div class="form-grid">
+        <div>
+          <label for="collections_header_eyebrow">Overlinje</label>
+          <input type="text" id="collections_header_eyebrow" name="collections_header_eyebrow" value="<%= content.collectionsPage.header.eyebrow %>">
+        </div>
+        <div>
+          <label for="collections_header_title">Tittel</label>
+          <input type="text" id="collections_header_title" name="collections_header_title" value="<%= content.collectionsPage.header.title %>">
+        </div>
+        <div>
+          <label for="collections_header_subtitle">Undertittel</label>
+          <textarea id="collections_header_subtitle" name="collections_header_subtitle"><%= content.collectionsPage.header.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div>
+          <label for="collections_cta_eyebrow">CTA overlinje</label>
+          <input type="text" id="collections_cta_eyebrow" name="collections_cta_eyebrow" value="<%= content.collectionsPage.cta.eyebrow %>">
+        </div>
+        <div>
+          <label for="collections_cta_title">CTA tittel</label>
+          <input type="text" id="collections_cta_title" name="collections_cta_title" value="<%= content.collectionsPage.cta.title %>">
+        </div>
+        <div>
+          <label for="collections_cta_subtitle">CTA undertittel</label>
+          <textarea id="collections_cta_subtitle" name="collections_cta_subtitle"><%= content.collectionsPage.cta.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="collections_cta_primary_label">Prim&aelig;r knappetekst</label>
+          <input type="text" id="collections_cta_primary_label" name="collections_cta_primary_label" value="<%= content.collectionsPage.cta.primaryCta.label %>">
+        </div>
+        <div>
+          <label for="collections_cta_primary_href">Prim&aelig;r lenke</label>
+          <input type="text" id="collections_cta_primary_href" name="collections_cta_primary_href" value="<%= content.collectionsPage.cta.primaryCta.href %>">
+        </div>
+        <div>
+          <label for="collections_cta_secondary_label">Sekund&aelig;r knappetekst</label>
+          <input type="text" id="collections_cta_secondary_label" name="collections_cta_secondary_label" value="<%= content.collectionsPage.cta.secondaryCta.label %>">
+        </div>
+        <div>
+          <label for="collections_cta_secondary_href">Sekund&aelig;r lenke</label>
+          <input type="text" id="collections_cta_secondary_href" name="collections_cta_secondary_href" value="<%= content.collectionsPage.cta.secondaryCta.href %>">
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Kolleksjonsdetalj - CTA</div>
+      <div class="form-grid">
+        <div>
+          <label for="collection_detail_cta_eyebrow">Overlinje</label>
+          <input type="text" id="collection_detail_cta_eyebrow" name="collection_detail_cta_eyebrow" value="<%= content.collectionDetail.cta.eyebrow %>">
+        </div>
+        <div>
+          <label for="collection_detail_cta_title">Tittel</label>
+          <input type="text" id="collection_detail_cta_title" name="collection_detail_cta_title" value="<%= content.collectionDetail.cta.title %>">
+        </div>
+        <div>
+          <label for="collection_detail_cta_subtitle">Undertittel</label>
+          <textarea id="collection_detail_cta_subtitle" name="collection_detail_cta_subtitle"><%= content.collectionDetail.cta.subtitle %></textarea>
+        </div>
+      </div>
+      <div class="repeat-columns">
+        <div>
+          <label for="collection_detail_cta_primary_label">Prim&aelig;r knappetekst</label>
+          <input type="text" id="collection_detail_cta_primary_label" name="collection_detail_cta_primary_label" value="<%= content.collectionDetail.cta.primaryCta.label %>">
+        </div>
+        <div>
+          <label for="collection_detail_cta_primary_href">Prim&aelig;r lenke</label>
+          <input type="text" id="collection_detail_cta_primary_href" name="collection_detail_cta_primary_href" value="<%= content.collectionDetail.cta.primaryCta.href %>">
+        </div>
+        <div>
+          <label for="collection_detail_cta_secondary_label">Sekund&aelig;r knappetekst</label>
+          <input type="text" id="collection_detail_cta_secondary_label" name="collection_detail_cta_secondary_label" value="<%= content.collectionDetail.cta.secondaryCta.label %>">
+        </div>
+        <div>
+          <label for="collection_detail_cta_secondary_href">Sekund&aelig;r lenke</label>
+          <input type="text" id="collection_detail_cta_secondary_href" name="collection_detail_cta_secondary_href" value="<%= content.collectionDetail.cta.secondaryCta.href %>">
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Produkter-side</div>
+      <div class="form-grid">
+        <div>
+          <label for="products_header_eyebrow">Overlinje</label>
+          <input type="text" id="products_header_eyebrow" name="products_header_eyebrow" value="<%= content.productsPage.header.eyebrow %>">
+        </div>
+        <div>
+          <label for="products_header_title">Tittel</label>
+          <input type="text" id="products_header_title" name="products_header_title" value="<%= content.productsPage.header.title %>">
+        </div>
+        <div>
+          <label for="products_header_subtitle">Undertittel</label>
+          <textarea id="products_header_subtitle" name="products_header_subtitle"><%= content.productsPage.header.subtitle %></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">Produktdetalj</div>
+      <div class="form-grid">
+        <div>
+          <label for="product_detail_eyebrow">Overlinje</label>
+          <input type="text" id="product_detail_eyebrow" name="product_detail_eyebrow" value="<%= content.productDetail.eyebrow %>">
+        </div>
+        <div>
+          <label for="product_detail_notice">Infoboks</label>
+          <textarea id="product_detail_notice" name="product_detail_notice"><%= content.productDetail.notice %></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-actions" style="justify-content: flex-end;">
+      <button class="btn" type="submit">Lagre innhold</button>
+    </div>
+
+    <template id="hero-meta-template">
+      <div class="repeat-item" data-repeater-item>
+        <input type="text" name="hero_meta[]" placeholder="F.eks. Fri frakt over 4 490,-">
+        <div class="repeat-actions">
+          <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="timeline-template">
+      <div class="repeat-item" data-repeater-item>
+        <div class="repeat-columns">
+          <div>
+            <label>Tittel</label>
+            <input type="text" name="timeline_title[]">
+          </div>
+          <div>
+            <label>Beskrivelse</label>
+            <input type="text" name="timeline_description[]">
+          </div>
+        </div>
+        <div>
+          <label>Detalj (valgfritt)</label>
+          <input type="text" name="timeline_detail[]">
+        </div>
+        <div class="repeat-actions">
+          <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="benefits-template">
+      <div class="repeat-item" data-repeater-item>
+        <div class="repeat-columns">
+          <div>
+            <label>Tittel</label>
+            <input type="text" name="benefit_title[]">
+          </div>
+          <div>
+            <label>Beskrivelse</label>
+            <input type="text" name="benefit_description[]">
+          </div>
+        </div>
+        <div class="repeat-actions">
+          <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="specs-template">
+      <div class="repeat-item" data-repeater-item>
+        <div class="repeat-columns">
+          <div>
+            <label>Verdi</label>
+            <input type="text" name="spec_value[]">
+          </div>
+          <div>
+            <label>Beskrivelse</label>
+            <input type="text" name="spec_label[]">
+          </div>
+        </div>
+        <div>
+          <label>Detalj (valgfritt)</label>
+          <input type="text" name="spec_detail[]">
+        </div>
+        <div class="repeat-actions">
+          <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="collections-template">
+      <div class="repeat-item" data-repeater-item>
+        <div class="repeat-columns">
+          <div>
+            <label>Tittel</label>
+            <input type="text" name="collection_title[]">
+          </div>
+          <div>
+            <label>Undertittel</label>
+            <input type="text" name="collection_subtitle[]">
+          </div>
+          <div>
+            <label>Handle</label>
+            <input type="text" name="collection_handle[]">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div>
+            <label>Pitch</label>
+            <input type="text" name="collection_pitch[]">
+          </div>
+          <div>
+            <label>Lead</label>
+            <textarea name="collection_lead[]"></textarea>
+          </div>
+        </div>
+        <div class="repeat-actions">
+          <button class="btn ghost small" type="button" data-repeater-remove>Fjern</button>
+        </div>
+      </div>
+    </template>
+  </form>
+</section>
+
+<%- include('../partials/layout-end') %>

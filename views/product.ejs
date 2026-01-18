@@ -1,0 +1,39 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="product-detail reveal" data-animate>
+    <div class="product-gallery" data-product-gallery tabindex="0" aria-label="Produktbilder">
+      <div class="product-detail-media" data-zoom-media>
+        <% productImages.forEach((image, index) => { %>
+          <img src="<%= image %>" alt="<%= product.name %>" loading="lazy" class="<%= index === 0 ? 'is-active' : '' %>" data-gallery-image>
+        <% }) %>
+        <% if (productImages.length > 1) { %>
+          <button class="gallery-arrow prev" type="button" data-gallery-prev aria-label="Forrige bilde">&#8249;</button>
+          <button class="gallery-arrow next" type="button" data-gallery-next aria-label="Neste bilde">&#8250;</button>
+        <% } %>
+      </div>
+    </div>
+    <div class="product-detail-info">
+      <div class="eyebrow"><%= content.productDetail.eyebrow %></div>
+      <h1><%= product.name %></h1>
+      <div class="product-price"><%= formatMoney(product.price_cents) %></div>
+      <p class="product-description"><%= product.description %></p>
+      <form method="post" action="/cart/add">
+        <input type="hidden" name="product_id" value="<%= product.id %>">
+        <div class="quantity">
+          <label for="qty">Antall</label>
+          <input type="number" id="qty" name="qty" value="1" min="1">
+        </div>
+        <div class="product-actions" style="margin-top: 24px;">
+          <button class="btn" type="submit">Legg i kurv</button>
+          <a class="btn outline" href="/products">Tilbake til butikk</a>
+        </div>
+      </form>
+      <div class="notice" style="margin-top: 32px;">
+        <%= content.productDetail.notice %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

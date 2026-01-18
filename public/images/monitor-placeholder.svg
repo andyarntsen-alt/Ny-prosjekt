@@ -1,0 +1,13 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0b0f16"/>
+      <stop offset="1" stop-color="#141c28"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <rect x="160" y="140" width="480" height="280" rx="24" stroke="#ffffff" stroke-width="2"/>
+  <rect x="220" y="460" width="360" height="20" rx="10" fill="#ffffff" fill-opacity="0.4"/>
+  <text x="400" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ffffff">PROMONITOR</text>
+  <text x="400" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#a3adba">PORTABLE DISPLAY</text>
+</svg>

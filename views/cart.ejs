@@ -1,0 +1,46 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow">Handlekurv</div>
+    <h1 class="section-title">Oppsummering av valgene dine</h1>
+    <p class="section-subtitle">Kontroller antall og g&aring; videre til kassen n&aring;r du er klar.</p>
+  </div>
+  
+  <% if (items.length === 0) { %>
+    <div class="reveal" data-animate style="text-align: center;">
+      <p style="color: var(--text-secondary); margin-bottom: 32px;">Kurven er tom. Se hele utvalget og bygg din arbeidsflate.</p>
+      <a class="btn" href="/products">Se produkter</a>
+    </div>
+  <% } else { %>
+    <form method="post" action="/cart/update" class="cart-panel reveal" data-animate data-cart>
+      <% items.forEach((item) => { %>
+        <div class="cart-item" data-cart-item data-price-cents="<%= item.price_cents %>">
+          <img src="<%= item.image_path %>" alt="<%= item.name %>">
+          <div class="cart-item-info">
+            <h4><%= item.name %></h4>
+            <div class="product-price" data-unit-price><%= formatMoney(item.price_cents) %></div>
+            <div class="cart-line-total" data-line-total><%= formatMoney(item.price_cents * item.qty) %></div>
+          </div>
+          <div class="cart-actions">
+            <div class="quantity" style="margin: 0;">
+              <label for="qty_<%= item.id %>">Antall</label>
+              <input type="number" id="qty_<%= item.id %>" name="qty_<%= item.id %>" value="<%= item.qty %>" min="1" data-qty-input>
+            </div>
+            <button class="btn ghost small" type="submit" formaction="/cart/remove" name="product_id" value="<%= item.id %>">Fjern</button>
+          </div>
+        </div>
+      <% }) %>
+      <div class="total-row">
+        <span>Delsum</span>
+        <span data-cart-subtotal><%= formatMoney(totals.subtotal) %></span>
+      </div>
+      <div class="product-actions" style="justify-content: flex-end; margin-top: 24px;">
+        <button class="btn ghost" type="submit">Oppdater handlekurv</button>
+        <a class="btn" href="/checkout">G&aring; til kassen</a>
+      </div>
+    </form>
+  <% } %>
+</section>
+
+<%- include('partials/layout-end') %>

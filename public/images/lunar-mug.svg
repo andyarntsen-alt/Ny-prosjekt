@@ -1,0 +1,15 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0f15"/>
+      <stop offset="1" stop-color="#141f2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <rect x="280" y="210" width="240" height="220" rx="20" stroke="#23d4ff" stroke-width="2"/>
+  <path d="M520 260 C560 260 560 380 520 380" stroke="#f5313f" stroke-width="3" fill="none"/>
+  <circle cx="350" cy="260" r="10" fill="#f4f7fb"/>
+  <circle cx="430" cy="320" r="8" fill="#f4f7fb"/>
+  <text x="400" y="330" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="40" fill="#f4f7fb">LUNAR MUG</text>
+  <text x="400" y="380" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="18" fill="#a0acbc">THERMAL SHIELD BASE</text>
+</svg>

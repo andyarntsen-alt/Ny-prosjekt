@@ -1,0 +1,47 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow">Kasse</div>
+    <h1 class="section-title">Fullf&oslash;r bestilling</h1>
+    <p class="section-subtitle">Oppgi leveringsinformasjon, s&aring; sender vi varene raskt.</p>
+  </div>
+  
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="notice" style="margin-bottom: 32px;"><%= error %></div>
+  <% } %>
+  
+  <div class="checkout-grid reveal" data-animate>
+    <form class="form-grid" method="post" action="/checkout">
+      <div>
+        <label for="name">Navn</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="email">E-post</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="address">Leveringsadresse</label>
+        <textarea id="address" name="address" required></textarea>
+      </div>
+      <button class="btn" type="submit" style="margin-top: 16px;">Fullf&oslash;r bestilling</button>
+    </form>
+    <div class="summary-card">
+      <h3>Oppsummering</h3>
+      <% items.forEach((item) => { %>
+        <div class="total-row" style="border: none; padding: 12px 0;">
+          <span><%= item.name %> &times; <%= item.qty %></span>
+          <span><%= formatMoney(item.price_cents * item.qty) %></span>
+        </div>
+      <% }) %>
+      <div class="total-row">
+        <strong>Total</strong>
+        <strong><%= formatMoney(totals.total) %></strong>
+      </div>
+      <p class="muted" style="margin-top: 24px; font-size: 13px;">30 dagers &aring;pent kj&oslash;p og trygg betaling.</p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

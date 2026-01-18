@@ -1,0 +1,50 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow">Kolleksjon</div>
+    <h1 class="section-title"><%= collection.title %></h1>
+    <p class="section-subtitle"><%= collection.lead %></p>
+  </div>
+
+  <% if (errorMessage) { %>
+    <div class="notice" style="margin-bottom: 32px;"><%= errorMessage %></div>
+  <% } %>
+
+  <div class="product-grid" data-animate>
+    <% products.forEach((product) => { %>
+      <div class="product-card reveal">
+        <a href="/products/<%= product.slug %>" class="product-media">
+          <img src="<%= product.image_path %>" alt="<%= product.name %>" loading="lazy">
+        </a>
+        <div class="product-body">
+          <div class="product-title"><%= product.name %></div>
+          <div class="product-price"><%= formatMoney(product.price_cents) %></div>
+          <div class="product-actions">
+            <a class="btn ghost small" href="/products/<%= product.slug %>">Detaljer</a>
+            <form method="post" action="/cart/add">
+              <input type="hidden" name="product_id" value="<%= product.id %>">
+              <button class="btn small" type="submit">Legg i kurv</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cta-band reveal" data-animate>
+    <div class="cta-content">
+      <div class="section-eyebrow"><%= content.collectionDetail.cta.eyebrow %></div>
+      <h2 class="section-title"><%= content.collectionDetail.cta.title %></h2>
+      <p class="section-subtitle"><%= content.collectionDetail.cta.subtitle %></p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn" href="<%= content.collectionDetail.cta.primaryCta.href %>"><%= content.collectionDetail.cta.primaryCta.label %></a>
+      <a class="btn outline" href="<%= content.collectionDetail.cta.secondaryCta.href %>"><%= content.collectionDetail.cta.secondaryCta.label %></a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

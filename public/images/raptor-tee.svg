@@ -1,0 +1,13 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0f16"/>
+      <stop offset="1" stop-color="#1a2333"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)"/>
+  <path d="M300 200 L350 160 H450 L500 200 V420 H300 Z" stroke="#23d4ff" stroke-width="2" fill="none"/>
+  <circle cx="400" cy="300" r="40" stroke="#f5313f" stroke-width="2" fill="none"/>
+  <text x="400" y="360" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="40" fill="#f4f7fb">RAPTOR TEE</text>
+  <text x="400" y="408" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="18" fill="#a0acbc">ENGINE SERIES</text>
+</svg>

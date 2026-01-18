@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %> | <%= siteName %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/main.js" defer></script>
+    <% if (pageScript === 'admin') { %>
+      <script src="/js/admin.js" defer></script>
+    <% } %>
+  </head>
+  <body class="<%= bodyClass || '' %>">
+    <header class="site-header" id="site-header">
+      <nav class="nav-wrapper">
+        <a class="brand" href="/"><%= siteName %></a>
+        <div class="nav-links">
+          <a href="/shop">TILBUD</a>
+          <a href="/products">PRODUKTER</a>
+          <a href="/collections">KOLLEKSJONER</a>
+        </div>
+        <div class="nav-actions">
+          <a class="cart-link" href="/cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
+            <% if (cartCount > 0) { %>
+              <span class="cart-count"><%= cartCount %></span>
+            <% } %>
+          </a>
+          <% if (adminUser) { %>
+            <a class="nav-link-admin" href="/admin">ADMINPANEL</a>
+            <form method="post" action="/admin/logout" style="margin:0">
+              <button class="nav-link-admin" type="submit">LOGG UT</button>
+            </form>
+          <% } %>
+        </div>
+      </nav>
+    </header>
+    <main>

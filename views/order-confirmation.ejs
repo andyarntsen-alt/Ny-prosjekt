@@ -1,0 +1,33 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="reveal" data-animate style="text-align: center; max-width: 600px; margin: 0 auto;">
+    <div class="notice" style="margin-bottom: 48px;">
+      <strong>Bestilling mottatt.</strong> Du f&aring;r ordrebekreftelse p&aring; e-post om et &oslash;yeblikk.
+    </div>
+    
+    <div class="section-eyebrow">Ordrebekreftelse</div>
+    <h1 class="section-title">Ordre #<%= order.id %></h1>
+    <p class="section-subtitle" style="margin-bottom: 48px;">Takk <%= order.name %> &ndash; vi sender oppdatering til <%= order.email %>.</p>
+    
+    <div class="summary-card" style="text-align: left;">
+      <h3>Ordredetaljer</h3>
+      <% items.forEach((item) => { %>
+        <div class="total-row" style="border: none; padding: 12px 0;">
+          <span><%= item.name %> &times; <%= item.qty %></span>
+          <span><%= formatMoney(item.line_total_cents) %></span>
+        </div>
+      <% }) %>
+      <div class="total-row">
+        <strong>Total</strong>
+        <strong><%= formatMoney(order.total_cents) %></strong>
+      </div>
+    </div>
+    
+    <div class="product-actions" style="margin-top: 32px; justify-content: center;">
+      <a class="btn" href="/products">Tilbake til butikk</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

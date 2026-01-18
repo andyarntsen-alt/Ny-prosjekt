@@ -1,0 +1,8 @@
+node_modules/
+data/store.db
+public/uploads/
+.env
+.env.*
+.DS_Store
+npm-debug.log*
+yarn-error.log*

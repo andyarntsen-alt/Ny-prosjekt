@@ -1,0 +1,31 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow"><%= content.productsPage.header.eyebrow %></div>
+    <h1 class="section-title"><%= content.productsPage.header.title %></h1>
+    <p class="section-subtitle"><%= content.productsPage.header.subtitle %></p>
+  </div>
+  <div class="product-grid" data-animate>
+    <% products.forEach((product) => { %>
+      <div class="product-card reveal">
+        <a class="product-media" href="/products/<%= product.slug %>">
+          <img src="<%= product.image_path %>" alt="<%= product.name %>" loading="lazy">
+        </a>
+        <div class="product-body">
+          <div class="product-title"><%= product.name %></div>
+          <div class="product-price"><%= formatMoney(product.price_cents) %></div>
+          <div class="product-actions">
+            <a class="btn ghost small" href="/products/<%= product.slug %>">Detaljer</a>
+            <form method="post" action="/cart/add">
+              <input type="hidden" name="product_id" value="<%= product.id %>">
+              <button class="btn small" type="submit">Legg i kurv</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

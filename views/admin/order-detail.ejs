@@ -1,0 +1,57 @@
+<%- include('../partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px; max-width: 800px; margin: 0 auto;">
+  <div class="section-header" style="margin-bottom: 48px;">
+    <div class="section-eyebrow">Administrasjon</div>
+    <h1 class="section-title">Ordre #<%= order.id %></h1>
+  </div>
+  
+  <div class="summary-card" style="margin-bottom: 32px;">
+    <h3>Kundeinformasjon</h3>
+    <div class="total-row" style="border: none; padding: 12px 0;">
+      <span style="color: var(--text-muted);">Navn</span>
+      <span><%= order.name %></span>
+    </div>
+    <div class="total-row" style="border: none; padding: 12px 0;">
+      <span style="color: var(--text-muted);">E-post</span>
+      <span><%= order.email %></span>
+    </div>
+    <div class="total-row" style="border: none; padding: 12px 0;">
+      <span style="color: var(--text-muted);">Adresse</span>
+      <span><%= order.address %></span>
+    </div>
+    <div class="total-row">
+      <strong>Total</strong>
+      <strong><%= formatMoney(order.total_cents) %></strong>
+    </div>
+  </div>
+  
+  <h3 style="font-family: var(--font-display); font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;">Produkter</h3>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Produkt</th>
+        <th>Antall</th>
+        <th>Pris</th>
+        <th>Linjetotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% items.forEach((item) => { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.qty %></td>
+          <td><%= formatMoney(item.price_cents) %></td>
+          <td><%= formatMoney(item.line_total_cents) %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  
+  <div class="product-actions" style="margin-top: 32px;">
+    <a class="btn outline" href="/admin/orders">Tilbake til ordre</a>
+  </div>
+</section>
+
+<%- include('../partials/layout-end') %>

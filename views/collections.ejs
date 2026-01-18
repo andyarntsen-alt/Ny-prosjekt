@@ -1,0 +1,35 @@
+<%- include('partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px;">
+  <div class="section-header reveal" data-animate>
+    <div class="section-eyebrow"><%= content.collectionsPage.header.eyebrow %></div>
+    <h1 class="section-title"><%= content.collectionsPage.header.title %></h1>
+    <p class="section-subtitle"><%= content.collectionsPage.header.subtitle %></p>
+  </div>
+  <div class="collection-grid" data-animate>
+    <% content.collections.forEach((collection) => { %>
+      <div class="collection-card reveal">
+        <div class="collection-label"><%= collection.subtitle %></div>
+        <h3><%= collection.title %></h3>
+        <p class="collection-copy"><%= collection.pitch %></p>
+        <a class="btn ghost small" href="/collections/<%= collection.handle %>">Se kolleksjonen</a>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <div class="cta-band reveal" data-animate>
+    <div class="cta-content">
+      <div class="section-eyebrow"><%= content.collectionsPage.cta.eyebrow %></div>
+      <h2 class="section-title"><%= content.collectionsPage.cta.title %></h2>
+      <p class="section-subtitle"><%= content.collectionsPage.cta.subtitle %></p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn" href="<%= content.collectionsPage.cta.primaryCta.href %>"><%= content.collectionsPage.cta.primaryCta.label %></a>
+      <a class="btn outline" href="<%= content.collectionsPage.cta.secondaryCta.href %>"><%= content.collectionsPage.cta.secondaryCta.label %></a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/layout-end') %>

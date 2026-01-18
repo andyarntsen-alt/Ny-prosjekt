@@ -1,0 +1,91 @@
+<%- include('../partials/layout-start') %>
+
+<section class="section" style="padding-top: 160px; max-width: 700px; margin: 0 auto;">
+  <div class="section-header" style="text-align: center; margin-bottom: 48px;">
+    <div class="section-eyebrow">Administrasjon</div>
+    <h1 class="section-title"><%= product ? 'Rediger produkt' : 'Nytt produkt' %></h1>
+  </div>
+  
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="notice" style="margin-bottom: 24px;"><%= error %></div>
+  <% } %>
+  
+  <% const priceValue = product ? (product.price_cents / 100).toFixed(2) : ''; %>
+  <% const extraImages = (productImages || [])
+    .map((image) => {
+      if (!image) return null;
+      if (typeof image === 'string') return { image_path: image };
+      return image;
+    })
+    .filter((image) => image && image.image_path); %>
+  
+  <form class="form-grid" method="post" enctype="multipart/form-data" action="<%= product ? '/admin/products/' + product.id : '/admin/products' %>">
+    <div>
+      <label for="name">Produktnavn</label>
+      <input type="text" id="name" name="name" value="<%= product ? product.name : '' %>" required>
+    </div>
+    
+    <div>
+      <label for="description">Beskrivelse</label>
+      <textarea id="description" name="description" required><%= product ? product.description : '' %></textarea>
+    </div>
+    
+    <div>
+      <label for="price">Pris (NOK)</label>
+      <input type="text" id="price" name="price" value="<%= priceValue %>" required>
+    </div>
+    
+    <div>
+      <label for="image">Last opp bilde</label>
+      <input type="file" id="image" name="image" accept="image/*" data-image-input style="padding: 12px;">
+    </div>
+    
+    <div>
+      <label for="image_url">Eller bilde-URL</label>
+      <input type="text" id="image_url" name="image_url" value="<%= product ? product.image_path : '' %>" placeholder="https://...">
+    </div>
+    
+    <div>
+      <label>Forh&aring;ndsvisning</label>
+      <img data-image-preview src="<%= product ? product.image_path : '/images/monitor-placeholder.svg' %>" alt="Forh&aring;ndsvisning" style="margin-top: 12px; max-width: 240px; border: 1px solid var(--border);">
+    </div>
+
+    <div>
+      <label for="gallery_images">Tilleggsbilder</label>
+      <input type="file" id="gallery_images" name="gallery_images" accept="image/*" multiple style="padding: 12px;">
+      <p class="muted" style="margin-top: 8px;">Legg til flere bilder for dette produktet. Det f&oslash;rste bildet vises i butikken, resten vises p&aring; produktsiden.</p>
+    </div>
+
+    <% if (extraImages.length > 0) { %>
+      <div>
+        <label>Lagrede tilleggsbilder</label>
+        <div class="admin-gallery">
+          <% extraImages.forEach((image, index) => { %>
+            <div class="admin-gallery-card">
+              <img src="<%= image.image_path %>" alt="Tilleggsbilde <%= index + 1 %>">
+              <% if (product && image.id) { %>
+                <form method="post" action="/admin/products/<%= product.id %>/images/<%= image.id %>/delete">
+                  <button class="btn outline small" type="submit">Fjern</button>
+                </form>
+              <% } else { %>
+                <span class="badge">Lagres ved lagring</span>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 16px 0;">
+      <input type="checkbox" id="is_featured" name="is_featured" <%= product && product.is_featured ? 'checked' : '' %> style="width: auto;">
+      <label for="is_featured" style="margin: 0;">Vis i tilbud</label>
+    </div>
+    
+    <div class="product-actions" style="margin-top: 24px;">
+      <button class="btn" type="submit">Lagre produkt</button>
+      <a class="btn outline" href="/admin/products">Avbryt</a>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/layout-end') %>
