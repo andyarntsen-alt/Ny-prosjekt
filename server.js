@@ -9,9 +9,18 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const dataDir = path.join(__dirname, 'data');
+const isServerless = Boolean(
+  process.env.VERCEL ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.NOW_REGION
+);
+const dataDir = isServerless
+  ? path.join('/tmp', 'promonitor-data')
+  : path.join(__dirname, 'data');
 const dbFile = path.join(dataDir, 'store.db');
-const uploadDir = path.join(__dirname, 'public', 'uploads');
+const uploadDir = isServerless
+  ? path.join('/tmp', 'promonitor-uploads')
+  : path.join(__dirname, 'public', 'uploads');
 
 fs.mkdirSync(dataDir, { recursive: true });
 fs.mkdirSync(uploadDir, { recursive: true });
@@ -820,6 +829,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(uploadDir));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -830,6 +840,17 @@ app.use(
     cookie: { httpOnly: true }
   })
 );
+
+const dbReady = initDb();
+
+app.use(async (req, res, next) => {
+  try {
+    await dbReady;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.use(async (req, res, next) => {
   const cart = getCart(req.session);
@@ -1892,13 +1913,23 @@ app.use((err, req, res, next) => {
   res.status(500).send('Noe gikk galt.');
 });
 
-initDb()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`ProMonitor store running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to initialize database', err);
+const handleInitError = (err) => {
+  console.error('Failed to initialize database', err);
+  if (!isServerless) {
     process.exit(1);
-  });
+  }
+};
+
+if (!isServerless) {
+  dbReady
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`ProMonitor store running on http://localhost:${PORT}`);
+      });
+    })
+    .catch(handleInitError);
+} else {
+  dbReady.catch(handleInitError);
+}
+
+module.exports = app;
